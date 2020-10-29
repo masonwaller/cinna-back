@@ -12,6 +12,17 @@ class UsersController < ApplicationController
     render json: @user
   end
 
+  def login
+    @user = User.all.find_by email: user_params[:email]
+    if !@user
+      render json: {msg:"Unable to find user."}
+    elsif @user[:password] != user_params[:password]
+      render json: {msg: "Incorrect password."}
+    else
+      render json: @user
+    end
+  end
+
   # POST /users
   def create
     @user = User.new(user_params)
